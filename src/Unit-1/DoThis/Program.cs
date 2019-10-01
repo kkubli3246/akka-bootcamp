@@ -15,8 +15,6 @@ namespace WinTail
             // initialize MyActorSystem
             MyActorSystem = ActorSystem.Create("MyActorSystem");
 
-            PrintInstructions();
-
             // time to make your first actors!
             var consoleWriterActor = MyActorSystem.ActorOf(Props.Create(() =>
                 new ConsoleWriterActor()));
@@ -29,7 +27,8 @@ namespace WinTail
 
             // blocks the main thread from exiting until the actor system is shut down
             MyActorSystem.WhenTerminated.Wait();
- 
+
+        }
+        #endregion
     }
-    #endregion
 }
