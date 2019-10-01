@@ -12,6 +12,8 @@ namespace WinTail
         public const string ExitCommand = "exit";
         private IActorRef _consoleWriterActor;
 
+        public const string StartCommand = "start";
+
         public ConsoleReaderActor(IActorRef consoleWriterActor)
         {
             _consoleWriterActor = consoleWriterActor;
@@ -19,20 +21,16 @@ namespace WinTail
 
         protected override void OnReceive(object message)
         {
-            var read = Console.ReadLine();
-            if (!string.IsNullOrEmpty(read) && String.Equals(read, ExitCommand, StringComparison.OrdinalIgnoreCase))
+            if (message.Equals(StartCommand))
             {
-                // shut down the system (acquire handle to system via
-                // this actors context)
-                Context.System.Terminate();
-                return;
+                DoPrintInstructions();
+            }
+            else if (message is Messages.InputError)
+            {
+                _consoleWriterActor.Tell(message as Messages.InputError);
             }
 
-            // send input to the console writer to process and print
-            // YOU NEED TO FILL IN HERE
-
-            // continue reading messages from the console
-            // YOU NEED TO FILL IN HERE
+            GetAndValidateInput();
         }
 
     }
